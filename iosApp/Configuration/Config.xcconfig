@@ -1,0 +1,7 @@
+TEAM_ID=
+
+PRODUCT_NAME=Rememberdrinking
+PRODUCT_BUNDLE_IDENTIFIER=com.yangpixi.rememberdrinking.Rememberdrinking$(TEAM_ID)
+
+CURRENT_PROJECT_VERSION=1
+MARKETING_VERSION=1.0
