@@ -10,4 +10,6 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 
 object BuildConfig {
     val TOKEN = stringPreferencesKey("TOKEN_KEY")
+
+    const val BASE_URL = "http://localhost:8080"
 }
