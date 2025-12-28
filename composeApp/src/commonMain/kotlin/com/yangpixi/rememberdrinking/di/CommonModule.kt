@@ -1,5 +1,9 @@
 package com.yangpixi.rememberdrinking.di
 
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 /**
@@ -9,5 +13,7 @@ import org.koin.dsl.module
  */
 
 val commonModule = module {
-
+    single(named("ApplicationScope")) {
+        CoroutineScope(SupervisorJob( ) + Dispatchers.Default)
+    }
 }
