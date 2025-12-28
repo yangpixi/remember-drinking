@@ -8,4 +8,5 @@ import org.koin.core.module.Module
  * @description 平台差异化注入方法
  */
 
+// 使用expect/actual逻辑实现不同平台注入
 expect val platformModule: Module
