@@ -2,7 +2,7 @@ CREATE TABLE water_intake_record (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     amount_ml INTEGER NOT NULL CHECK(amount_ml > 0),
     record_time INTEGER NOT NULL,
-    is_deleted INTEGER AS Boolean NOT NULL DEFAULT 0 CHECK(is_deleted IN (0, 1))
+    is_deleted INTEGER AS kotlin.Boolean NOT NULL DEFAULT 0 CHECK(is_deleted IN (0, 1))
 );
 
 CREATE INDEX idx_water_record_time ON water_intake_record(record_time);
