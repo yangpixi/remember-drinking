@@ -19,6 +19,7 @@ datastore = "1.2.0"
 ktor = "3.3.3"
 kotlinx-coroutines = "1.10.2"
 kotlinxDatetime = "0.7.1"
+sql-delight = "2.2.1"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -50,6 +51,10 @@ ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinx-coroutines" }
 kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "kotlinxDatetime" }
+sql-delight-android = { module = "app.cash.sqldelight:android-driver", version.ref = "sql-delight" }
+sql-delight-ios = { module = "app.cash.sqldelight:native-driver", version.ref = "sql-delight" }
+sql-delight-runtime = { module = "app.cash.sqldelight:runtime", version.ref = "sql-delight"}
+sql-delight-coroutines-extensions = { module = "app.cash.sqldelight:coroutines-extensions", version.ref = "sql-delight" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

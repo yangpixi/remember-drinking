@@ -1,4 +1,3 @@
-import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
@@ -6,6 +5,15 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
+    id("app.cash.sqldelight") version "2.2.1"
+}
+
+sqldelight {
+    databases {
+        create("Database") {
+            packageName.set("com.yangpixi.rememberdrinking.db")
+        }
+    }
 }
 
 kotlin {
@@ -32,6 +40,7 @@ kotlin {
             implementation(libs.koin.android)
             implementation(libs.ktor.client.okhttp)
             implementation(libs.kotlinx.coroutines.android)
+            implementation(libs.sql.delight.android)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -60,9 +69,12 @@ kotlin {
             implementation(libs.ktor.client.content.negotiation)
             implementation(libs.ktor.serialization.kotlinx.json)
             implementation(libs.ktor.client.auth)
+            implementation(libs.sql.delight.runtime)
+            implementation(libs.sql.delight.coroutines.extensions)
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
+            implementation(libs.sql.delight.ios)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
