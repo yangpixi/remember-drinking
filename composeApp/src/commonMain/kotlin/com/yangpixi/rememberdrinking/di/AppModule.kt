@@ -6,5 +6,5 @@ package com.yangpixi.rememberdrinking.di
  * @description 主注入方法
  */
 
-fun appModule() = listOf(commonModule, )
+fun appModule() = listOf(commonModule, platformModule)
 
