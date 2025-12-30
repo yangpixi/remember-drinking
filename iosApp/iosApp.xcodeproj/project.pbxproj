@@ -8,6 +8,7 @@
 
 /* Begin PBXFileReference section */
 		43192EC1401E71F4531DCD99 /* Rememberdrinking.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Rememberdrinking.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4A40D9DD2F040B11005AE68F /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -52,8 +53,17 @@
 			children = (
 				A2F83726630C2C26CF72D7AB /* Configuration */,
 				180371B0E7ADB3C8D0E8110F /* iosApp */,
+				4A40D9DC2F040B11005AE68F /* Frameworks */,
 				F26D86608F85787DAE9E8CB8 /* Products */,
 			);
+			sourceTree = "<group>";
+		};
+		4A40D9DC2F040B11005AE68F /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				4A40D9DD2F040B11005AE68F /* libsqlite3.tbd */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		F26D86608F85787DAE9E8CB8 /* Products */ = {

@@ -1,6 +1,7 @@
 package com.yangpixi.rememberdrinking.di
 
 import android.content.Context
+import app.cash.sqldelight.db.SqlDriver
 import app.cash.sqldelight.driver.android.AndroidSqliteDriver
 import com.yangpixi.rememberdrinking.db.Database
 import com.yangpixi.rememberdrinking.platform.createDataStore
@@ -12,7 +13,7 @@ actual val platformModule: Module = module {
         createDataStore(::get)
     }
 
-    single {
+    single<SqlDriver> {
         AndroidSqliteDriver(Database.Schema, get<Context>(), "app.db")
     }
 }

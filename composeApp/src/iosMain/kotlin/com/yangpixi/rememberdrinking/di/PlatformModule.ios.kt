@@ -1,5 +1,6 @@
 package com.yangpixi.rememberdrinking.di
 
+import app.cash.sqldelight.db.SqlDriver
 import app.cash.sqldelight.driver.native.NativeSqliteDriver
 import com.yangpixi.rememberdrinking.db.Database
 import com.yangpixi.rememberdrinking.platform.createDataStore
@@ -11,7 +12,7 @@ actual val platformModule: Module = module {
         createDataStore()
     }
 
-    single {
+    single<SqlDriver> {
         NativeSqliteDriver(Database.Schema, "app.db")
     }
 }

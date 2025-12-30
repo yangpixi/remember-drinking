@@ -1,9 +1,8 @@
 package com.yangpixi.rememberdrinking.di
 
-import app.cash.sqldelight.ColumnAdapter
 import app.cash.sqldelight.db.SqlDriver
+import com.yangpixi.rememberdrinking.data.repository.WaterRepo
 import com.yangpixi.rememberdrinking.db.Database
-import com.yangpixi.rememberdrinking.db.Water_intake_record
 import com.yangpixi.rememberdrinking.presentation.screen.HomeViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -24,16 +23,16 @@ val commonModule = module {
     }
 
     // home
-    singleOf(::HomeViewModel)
-
-    // 定义转换器
-    val booleanAdapter = object : ColumnAdapter<Boolean, Long> {
-        override fun decode(databaseValue: Long): Boolean = databaseValue == 1L
-        override fun encode(value: Boolean): Long = if (value) 1L else 0L
+    single{
+        HomeViewModel(get<WaterRepo>())
     }
+
     // 完成Database的注入
     single {
-        Database(get<SqlDriver>(), Water_intake_record.Adapter(booleanAdapter))
+        Database(get<SqlDriver>())
     }
+
+    // 获取单例WaterRepo
+    singleOf(::WaterRepo)
 
 }

@@ -11,11 +11,16 @@ insertRecord:
 INSERT INTO water_intake_record(amount_ml, record_time)
 VALUES (?, ?);
 
-selectByTimeRange:
+selectAllByTimeRange:
 SELECT *
 FROM water_intake_record
 WHERE record_time >= ? AND record_time < ? AND is_deleted = 0
 ORDER BY record_time DESC;
+
+selectTotalDrinkToday:
+SELECT SUM(amount_ml)
+FROM water_intake_record
+WHERE record_time >= ? AND record_time < ? AND is_deleted = 0;
 
 softDeleteById:
 UPDATE water_intake_record
