@@ -10,7 +10,7 @@ import org.koin.dsl.module
 
 actual val platformModule: Module = module {
     single {
-        createDataStore(::get)
+        createDataStore(get<Context>())
     }
 
     single<SqlDriver> {
