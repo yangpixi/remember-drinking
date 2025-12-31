@@ -1,13 +1,17 @@
 package com.yangpixi.rememberdrinking.di
 
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
 import app.cash.sqldelight.db.SqlDriver
 import com.yangpixi.rememberdrinking.data.repository.WaterRepo
 import com.yangpixi.rememberdrinking.db.Database
-import com.yangpixi.rememberdrinking.presentation.screen.HomeViewModel
+import com.yangpixi.rememberdrinking.presentation.screen.history.HistoryViewModel
+import com.yangpixi.rememberdrinking.presentation.screen.home.HomeViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import org.koin.core.module.dsl.singleOf
+import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
@@ -22,9 +26,9 @@ val commonModule = module {
         CoroutineScope(SupervisorJob( ) + Dispatchers.Default)
     }
 
-    // home
-    single{
-        HomeViewModel(get<WaterRepo>())
+    // homeViewModel获取
+    viewModel{
+        HomeViewModel( get<WaterRepo>(),get<DataStore<Preferences>>())
     }
 
     // 完成Database的注入
@@ -35,4 +39,8 @@ val commonModule = module {
     // 获取单例WaterRepo
     singleOf(::WaterRepo)
 
+    // historyViewModel
+    viewModel {
+        HistoryViewModel(get<WaterRepo>())
+    }
 }
