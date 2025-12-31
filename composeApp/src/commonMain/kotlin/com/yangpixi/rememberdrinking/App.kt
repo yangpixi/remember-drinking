@@ -1,7 +1,14 @@
 package com.yangpixi.rememberdrinking
 
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.History
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -16,8 +23,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.compose.AppTheme
+import com.yangpixi.rememberdrinking.presentation.component.BottomBar
+import com.yangpixi.rememberdrinking.presentation.component.BottomNavItem
 import com.yangpixi.rememberdrinking.presentation.component.TopBar
-import com.yangpixi.rememberdrinking.presentation.screen.HomeScreen
+import com.yangpixi.rememberdrinking.presentation.screen.history.HistoryScreen
+import com.yangpixi.rememberdrinking.presentation.screen.home.HomeScreen
+import com.yangpixi.rememberdrinking.presentation.screen.settings.SettingsScreen
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -28,6 +39,39 @@ fun App() {
     val snackbarHostState = remember { SnackbarHostState() } //使用snackbar替代原生Toast
     val navController = rememberNavController() //获取navController供NavHost使用
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+    val bottomNavList = listOf(
+        BottomNavItem(
+            name = "主页",
+            route = "homepage",
+            icon = Icons.Default.Home
+        ),
+        BottomNavItem(
+            name = "历史",
+            route = "history",
+            icon = Icons.Default.History
+        ),
+        BottomNavItem(
+            name = "设置",
+            route = "settings",
+            icon = Icons.Default.Settings
+        )
+    )
+
+    // 添加一个listener，实现topBar标题的动态变化
+    var currentTitle by remember { mutableStateOf(bottomNavList.first().name) }
+    LaunchedEffect(navController) {
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            val newTitle = when (destination.route) {
+                "homepage" -> bottomNavList.find { it.route == "homepage" }?.name
+                "history" -> bottomNavList.find { it.route == "history" }?.name
+                "settings" -> bottomNavList.find { it.route == "settings" }?.name
+                else -> currentTitle
+            }
+            if (newTitle != null) {
+                currentTitle = newTitle
+            }
+        }
+    }
 
     AppTheme {
         Scaffold(
@@ -37,7 +81,10 @@ fun App() {
                 SnackbarHost(hostState = snackbarHostState)
             },
             topBar = {
-                TopBar(title = "主页面", scrollBehavior,)
+                TopBar(title = currentTitle, scrollBehavior)
+            },
+            bottomBar = {
+                BottomBar(navController = navController, navigationItems = bottomNavList)
             }
         ) { innerPadding ->
             NavHost(
@@ -45,10 +92,42 @@ fun App() {
                 modifier = Modifier
                     .padding(innerPadding)
                     .padding(horizontal = 20.dp),
-                startDestination = "homepage"
+                startDestination = "homepage",
+                enterTransition = {
+                    slideInHorizontally(
+                        initialOffsetX = { fullWidth -> fullWidth },
+                        animationSpec = tween(300)
+                    )
+                },
+                exitTransition = {
+                    slideOutHorizontally(
+                        targetOffsetX = { fullWidth -> -fullWidth },
+                        animationSpec = tween(300)
+                    )
+                },
+                popEnterTransition = {
+                    slideInHorizontally(
+                        initialOffsetX = { fullWidth -> -fullWidth },
+                        animationSpec = tween(300)
+                    )
+                },
+                popExitTransition = {
+                    slideOutHorizontally(
+                        targetOffsetX = { fullWidth -> fullWidth },
+                        animationSpec = tween(300)
+                    )
+                }
             ) {
                 composable("homepage") {
                     HomeScreen()
+                }
+
+                composable("history") {
+                    HistoryScreen()
+                }
+
+                composable("settings") {
+                    SettingsScreen()
                 }
             }
         }

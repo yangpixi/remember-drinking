@@ -1,6 +1,5 @@
 package com.yangpixi.rememberdrinking.presentation.component
 
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -16,7 +15,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 /**
  * @author yangpixi
  * @date 2025/12/28 12:44
- * @description
+ * @description topBar组件
  */
 
 @OptIn(ExperimentalMaterial3Api::class)
