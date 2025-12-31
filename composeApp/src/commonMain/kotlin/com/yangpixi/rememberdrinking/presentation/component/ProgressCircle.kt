@@ -31,7 +31,14 @@ fun ProgressCircle(
     circleColor: Color,
     arcColor: Color
 ) {
-    val degree = (progress.toFloat() / goal.toFloat()).coerceIn(0f, 1f)
+    val safeDivision = if (goal == 0) {
+      0f
+    } else {
+        progress.toFloat() / goal.toFloat()
+    }
+    val degree = safeDivision.coerceIn(0f, 1f)
+    val textProgress: Int = (safeDivision * 100).toInt()
+
     val animatedProgress by animateFloatAsState(
         targetValue = degree,
         animationSpec = tween(1000)
@@ -59,6 +66,6 @@ fun ProgressCircle(
                 size = size
             )
         }
-        Text(text = "当前进度: ${(progress.toFloat() / goal.toFloat() * 100).toInt()}%")
+        Text(text = "当前进度: ${textProgress}%")
     }
 }
