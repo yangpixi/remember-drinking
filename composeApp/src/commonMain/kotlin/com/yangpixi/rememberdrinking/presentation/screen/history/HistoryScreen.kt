@@ -1,5 +1,6 @@
 package com.yangpixi.rememberdrinking.presentation.screen.history
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,6 +18,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.yangpixi.rememberdrinking.domain.model.WaterRecord
@@ -31,21 +33,33 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun HistoryScreen() {
+
     val viewModel = koinViewModel<HistoryViewModel>()
 
     val recordList by viewModel.todayRecordList.collectAsState()
-    LazyColumn(
-        modifier = Modifier.fillMaxSize()
-    ) {
-        items(
-            items = recordList,
-            key = { record: WaterRecord -> record.id }
+
+    if (recordList.isEmpty()) {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            DrinkItem(
-                amount = it.amountMl,
-                time = it.recordTime
-            )
-            Spacer(modifier = Modifier.height(10.dp))
+            Text("今日暂无喝水记录哦")
+        }
+    } else {
+        LazyColumn(
+            modifier = Modifier.fillMaxSize()
+        ) {
+            items(
+                items = recordList,
+                key = { record: WaterRecord -> record.id }
+            ) {
+                DrinkItem(
+                    amount = it.amountMl,
+                    time = it.recordTime
+                )
+                Spacer(modifier = Modifier.height(10.dp))
+            }
         }
     }
 }
