@@ -41,7 +41,6 @@ class AuthManager(
         }
     }
 
-
     // 获取登录token
     fun getToken(): String? {
         val status = authStatus.value

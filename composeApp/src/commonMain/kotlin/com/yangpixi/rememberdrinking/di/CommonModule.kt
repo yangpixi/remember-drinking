@@ -3,10 +3,14 @@ package com.yangpixi.rememberdrinking.di
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import app.cash.sqldelight.db.SqlDriver
+import com.yangpixi.rememberdrinking.data.api.AuthApi
 import com.yangpixi.rememberdrinking.data.repository.WaterRepo
 import com.yangpixi.rememberdrinking.db.Database
+import com.yangpixi.rememberdrinking.presentation.screen.auth.login.LoginViewModel
 import com.yangpixi.rememberdrinking.presentation.screen.history.HistoryViewModel
 import com.yangpixi.rememberdrinking.presentation.screen.home.HomeViewModel
+import com.yangpixi.rememberdrinking.util.AuthManager
+import com.yangpixi.rememberdrinking.util.getClient
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -23,17 +27,27 @@ import org.koin.dsl.module
 
 val commonModule = module {
     single(named("ApplicationScope")) {
-        CoroutineScope(SupervisorJob( ) + Dispatchers.Default)
+        CoroutineScope(SupervisorJob() + Dispatchers.Default)
     }
 
     // homeViewModel获取
-    viewModel{
-        HomeViewModel( get<WaterRepo>(),get<DataStore<Preferences>>())
+    viewModel {
+        HomeViewModel(get<WaterRepo>(), get<DataStore<Preferences>>())
     }
 
     // 完成Database的注入
     single {
         Database(get<SqlDriver>())
+    }
+
+    // 获取认证管理器示例对象
+    single {
+        AuthManager(get<DataStore<Preferences>>(), get(named("ApplicationScope")))
+    }
+
+    // 获取ktor客户端
+    single {
+        getClient(get<AuthManager>())
     }
 
     // 获取单例WaterRepo
@@ -43,4 +57,10 @@ val commonModule = module {
     viewModel {
         HistoryViewModel(get<WaterRepo>())
     }
+
+    // 获取单例AuthApi对象
+    singleOf(::AuthApi)
+
+    // loginViewModel
+    singleOf(::LoginViewModel)
 }

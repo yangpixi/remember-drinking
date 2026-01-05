@@ -26,6 +26,7 @@ import com.example.compose.AppTheme
 import com.yangpixi.rememberdrinking.presentation.component.BottomBar
 import com.yangpixi.rememberdrinking.presentation.component.BottomNavItem
 import com.yangpixi.rememberdrinking.presentation.component.TopBar
+import com.yangpixi.rememberdrinking.presentation.screen.auth.login.LoginScreen
 import com.yangpixi.rememberdrinking.presentation.screen.history.HistoryScreen
 import com.yangpixi.rememberdrinking.presentation.screen.home.HomeScreen
 import com.yangpixi.rememberdrinking.presentation.screen.settings.SettingsScreen
@@ -54,7 +55,8 @@ fun App() {
             name = "设置",
             route = "settings",
             icon = Icons.Default.Settings
-        )
+        ),
+
     )
 
     // 添加一个listener，实现topBar标题的动态变化
@@ -65,6 +67,7 @@ fun App() {
                 "homepage" -> bottomNavList.find { it.route == "homepage" }?.name
                 "history" -> bottomNavList.find { it.route == "history" }?.name
                 "settings" -> bottomNavList.find { it.route == "settings" }?.name
+                "login" -> "登录" // 由于登录界面不在bottomBar里面，故使用硬编码
                 else -> currentTitle
             }
             if (newTitle != null) {
@@ -127,7 +130,11 @@ fun App() {
                 }
 
                 composable("settings") {
-                    SettingsScreen()
+                    SettingsScreen(navController)
+                }
+
+                composable("login") {
+                    LoginScreen()
                 }
             }
         }

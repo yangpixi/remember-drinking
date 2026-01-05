@@ -22,7 +22,7 @@ kotlin {
             jvmTarget.set(JvmTarget.JVM_11)
         }
     }
-    
+
     listOf(
         iosArm64(),
         iosSimulatorArm64()
@@ -71,6 +71,8 @@ kotlin {
             implementation(libs.ktor.client.auth)
             implementation(libs.sql.delight.runtime)
             implementation(libs.sql.delight.coroutines.extensions)
+            implementation(libs.coil.compose)
+            implementation(libs.coil.network.ktor3)
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
