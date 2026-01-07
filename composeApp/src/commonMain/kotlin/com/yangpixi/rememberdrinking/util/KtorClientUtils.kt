@@ -1,8 +1,8 @@
 package com.yangpixi.rememberdrinking.util
 
 import com.yangpixi.rememberdrinking.BuildConfig
-import com.yangpixi.rememberdrinking.data.api.ApiResponse
-import com.yangpixi.rememberdrinking.data.api.BizException
+import com.yangpixi.rememberdrinking.data.dto.ApiResponse
+import com.yangpixi.rememberdrinking.data.dto.BizException
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.HttpResponseValidator
