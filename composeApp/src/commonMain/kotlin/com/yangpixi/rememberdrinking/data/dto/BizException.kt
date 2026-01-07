@@ -1,4 +1,4 @@
-package com.yangpixi.rememberdrinking.data.api
+package com.yangpixi.rememberdrinking.data.dto
 
 /**
  * @author yangpixi
