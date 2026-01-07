@@ -2,7 +2,9 @@ package com.yangpixi.rememberdrinking.presentation.screen.auth.login
 
 import androidx.lifecycle.ViewModel
 import com.yangpixi.rememberdrinking.data.api.AuthApi
+import com.yangpixi.rememberdrinking.data.dto.LoginRequest
 import com.yangpixi.rememberdrinking.data.dto.RegisterRequest
+import com.yangpixi.rememberdrinking.util.AuthManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -13,7 +15,8 @@ import kotlinx.coroutines.flow.StateFlow
  */
 
 class LoginViewModel(
-    private val authApi: AuthApi
+    private val authApi: AuthApi,
+    private val authManager: AuthManager
 ) : ViewModel() {
 
     private val _usernameValue = MutableStateFlow("")
@@ -33,12 +36,17 @@ class LoginViewModel(
     }
 
 
-    suspend fun doRegister(username: String, password: String, phone: String) {
-        val request: RegisterRequest = RegisterRequest(
+    suspend fun doLogin(username: String, password: String) {
+        val request = LoginRequest(
             username,
-            password,
-            phone
+            password
         )
-        authApi.doRegister(request);
+        try {
+            val response = authApi.doLogin(request).getOrThrow() // 若是没有返回直接抛出异常
+            authManager.saveToken(response.token) // 将token存储到dataStore里面
+        } catch (e: Exception) {
+            println(e.message)
+        }
     }
+
 }

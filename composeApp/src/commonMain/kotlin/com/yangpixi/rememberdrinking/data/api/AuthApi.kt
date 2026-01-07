@@ -1,9 +1,15 @@
 package com.yangpixi.rememberdrinking.data.api
 
+import com.yangpixi.rememberdrinking.data.dto.LoginRequest
+import com.yangpixi.rememberdrinking.data.dto.LoginResponse
 import com.yangpixi.rememberdrinking.data.dto.RegisterRequest
+import com.yangpixi.rememberdrinking.util.bodyOrThrow
 import io.ktor.client.HttpClient
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
+import io.ktor.client.statement.HttpResponse
+import io.ktor.http.ContentType
+import io.ktor.http.contentType
 
 /**
  * @author yangpixi
@@ -16,10 +22,19 @@ class AuthApi(
 ) {
     suspend fun doRegister(data: RegisterRequest): Unit {
         client.post("/auth/user/register") {
+            contentType(ContentType.Application.Json)
             setBody(data)
         }
     }
 
-    // TODO: 实现登录接口
+    suspend fun doLogin(data: LoginRequest): Result<LoginResponse> {
+        return runCatching {
+            val response: HttpResponse = client.post("/auth/user/login") {
+                contentType(ContentType.Application.Json)
+                setBody(data)
+            }
 
+            response.bodyOrThrow<LoginResponse>()
+        }
+    }
 }

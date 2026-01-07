@@ -20,10 +20,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.viewmodel.koinViewModel
 import rememberdrinking.composeapp.generated.resources.Res
@@ -32,7 +34,7 @@ import rememberdrinking.composeapp.generated.resources.app_logo
 /**
  * @author yangpixi
  * @date 2026/1/4 12:51
- * @description 认证页面（登录+注册）
+ * @description 登录页面
  */
 
 @Composable
@@ -46,6 +48,7 @@ fun LoginScreen(
     val passwordValue by viewModel.passwordValue.collectAsState()
 
     val scrollState = rememberScrollState()
+    val scope = rememberCoroutineScope() // 获取协程，方便调用suspend方法
 
     Column(
         modifier = Modifier
@@ -123,7 +126,14 @@ fun LoginScreen(
         Spacer(modifier = Modifier.height(20.dp))
 
         Button(
-            onClick = {}, // TODO完成登录逻辑
+            onClick = {
+                scope.launch {
+                    viewModel.doLogin(
+                        usernameValue,
+                        passwordValue
+                    )
+                }
+            },
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("登录")
