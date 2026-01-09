@@ -3,8 +3,8 @@ package com.yangpixi.rememberdrinking.presentation.screen.auth.login
 import androidx.lifecycle.ViewModel
 import com.yangpixi.rememberdrinking.data.api.AuthApi
 import com.yangpixi.rememberdrinking.data.dto.LoginRequest
-import com.yangpixi.rememberdrinking.data.dto.RegisterRequest
 import com.yangpixi.rememberdrinking.util.AuthManager
+import com.yangpixi.rememberdrinking.util.GlobalSnackBarUtils
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -16,7 +16,8 @@ import kotlinx.coroutines.flow.StateFlow
 
 class LoginViewModel(
     private val authApi: AuthApi,
-    private val authManager: AuthManager
+    private val authManager: AuthManager,
+    private val globalSnackBarUtils: GlobalSnackBarUtils
 ) : ViewModel() {
 
     private val _usernameValue = MutableStateFlow("")
@@ -44,8 +45,11 @@ class LoginViewModel(
         try {
             val response = authApi.doLogin(request).getOrThrow() // 若是没有返回直接抛出异常
             authManager.saveToken(response.token) // 将token存储到dataStore里面
+
+            globalSnackBarUtils.sendEvent("正在登录")
         } catch (e: Exception) {
             println(e.message)
+            globalSnackBarUtils.sendEvent("登录失败!")
         }
     }
 

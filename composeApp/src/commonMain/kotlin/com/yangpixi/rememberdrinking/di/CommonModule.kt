@@ -7,9 +7,11 @@ import com.yangpixi.rememberdrinking.data.api.AuthApi
 import com.yangpixi.rememberdrinking.data.repository.WaterRepo
 import com.yangpixi.rememberdrinking.db.Database
 import com.yangpixi.rememberdrinking.presentation.screen.auth.login.LoginViewModel
+import com.yangpixi.rememberdrinking.presentation.screen.auth.register.RegisterViewModel
 import com.yangpixi.rememberdrinking.presentation.screen.history.HistoryViewModel
 import com.yangpixi.rememberdrinking.presentation.screen.home.HomeViewModel
 import com.yangpixi.rememberdrinking.util.AuthManager
+import com.yangpixi.rememberdrinking.util.GlobalSnackBarUtils
 import com.yangpixi.rememberdrinking.util.getClient
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -63,4 +65,11 @@ val commonModule = module {
 
     // loginViewModel
     singleOf(::LoginViewModel)
+
+    // 获取全局snackbar工具
+    singleOf(::GlobalSnackBarUtils)
+
+    viewModel {
+        RegisterViewModel(get(), get())
+    }
 }

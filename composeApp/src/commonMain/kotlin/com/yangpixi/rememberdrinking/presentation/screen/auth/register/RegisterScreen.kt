@@ -1,15 +1,12 @@
-package com.yangpixi.rememberdrinking.presentation.screen.auth.login
+package com.yangpixi.rememberdrinking.presentation.screen.auth.register
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -17,7 +14,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -28,48 +24,32 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import kotlinx.coroutines.launch
-import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.viewmodel.koinViewModel
-import rememberdrinking.composeapp.generated.resources.Res
-import rememberdrinking.composeapp.generated.resources.app_logo
 
 /**
  * @author yangpixi
- * @date 2026/1/4 12:51
- * @description 登录页面
+ * @date 2026/1/7 22:46
+ * @description 注册页面
  */
 
 @Composable
-fun LoginScreen(
+fun RegisterScreen(
     navController: NavController
 ) {
 
-    val viewModel = koinViewModel<LoginViewModel>()
+    val viewModel = koinViewModel<RegisterViewModel>()
+
     val usernameValue by viewModel.usernameValue.collectAsState()
     val passwordValue by viewModel.passwordValue.collectAsState()
-
+    val phoneVale by viewModel.phoneValue.collectAsState()
     val scrollState = rememberScrollState()
-    val scope = rememberCoroutineScope() // 获取协程，方便调用suspend方法
+    val scope = rememberCoroutineScope()
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .imePadding()
-            .verticalScroll(scrollState),
+            .verticalScroll(scrollState)
     ) {
-        Spacer(modifier = Modifier.height(20.dp))
-
-        Image(
-            painter = painterResource(Res.drawable.app_logo),
-            contentDescription = null,
-            modifier = Modifier
-                .height(100.dp)
-                .width(100.dp)
-                .align(Alignment.CenterHorizontally)
-        )
-
-        Spacer(modifier = Modifier.height(20.dp))
-
         Card(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(24.dp)
@@ -90,7 +70,7 @@ fun LoginScreen(
                     OutlinedTextField(
                         value = usernameValue,
                         onValueChange = {
-                            viewModel.updateUsernameValue(it)
+                            viewModel.updateUsername(it)
                         },
                         label = {
                             Text("用户名")
@@ -102,13 +82,11 @@ fun LoginScreen(
                         modifier = Modifier.fillMaxWidth()
                     )
 
-                    Spacer(modifier = Modifier.height(10.dp))
-
                     // 密码输入框
                     OutlinedTextField(
                         value = passwordValue,
                         onValueChange = {
-                            viewModel.updatePasswordValue(it)
+                            viewModel.updatePassword(it)
                         },
                         label = {
                             Text("密码")
@@ -120,38 +98,41 @@ fun LoginScreen(
                         modifier = Modifier.fillMaxWidth(),
                         visualTransformation = PasswordVisualTransformation()
                     )
+
+                    OutlinedTextField(
+                        value = phoneVale,
+                        onValueChange = {
+                            viewModel.updatePhone(it)
+                        },
+                        label = {
+                            Text("手机号")
+                        },
+                        placeholder = {
+                            Text("请输入")
+                        },
+                        shape = RoundedCornerShape(12.dp),
+                        modifier = Modifier.fillMaxWidth()
+                    )
                 }
             }
         }
 
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(modifier = Modifier.height(12.dp))
 
         Button(
             onClick = {
                 scope.launch {
-                    viewModel.doLogin(
+                    viewModel.doRegister(
                         usernameValue,
-                        passwordValue
+                        passwordValue,
+                        phoneVale
                     )
                 }
                 navController.popBackStack()
             },
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text("登录")
+            Text("注册")
         }
-
-        TextButton(
-            onClick = {
-                navController.navigate("register")
-            },
-            modifier = Modifier
-                .align(
-                    Alignment.CenterHorizontally
-                )
-        ) {
-            Text("还没有账号？去注册")
-        }
-
     }
 }
