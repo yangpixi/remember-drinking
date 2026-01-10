@@ -26,14 +26,13 @@ import com.example.compose.AppTheme
 import com.yangpixi.rememberdrinking.presentation.component.BottomBar
 import com.yangpixi.rememberdrinking.presentation.component.BottomNavItem
 import com.yangpixi.rememberdrinking.presentation.component.TopBar
+import com.yangpixi.rememberdrinking.presentation.screen.about.AboutScreen
 import com.yangpixi.rememberdrinking.presentation.screen.auth.login.LoginScreen
 import com.yangpixi.rememberdrinking.presentation.screen.auth.register.RegisterScreen
 import com.yangpixi.rememberdrinking.presentation.screen.history.HistoryScreen
 import com.yangpixi.rememberdrinking.presentation.screen.home.HomeScreen
 import com.yangpixi.rememberdrinking.presentation.screen.settings.SettingsScreen
 import com.yangpixi.rememberdrinking.util.GlobalSnackBarUtils
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.koinInject
 
@@ -69,9 +68,8 @@ fun App() {
             name = "设置",
             route = "settings",
             icon = Icons.Default.Settings
-        ),
-
         )
+    )
 
     // 添加一个listener，实现topBar标题的动态变化
     var currentTitle by remember { mutableStateOf(bottomNavList.first().name) }
@@ -83,6 +81,7 @@ fun App() {
                 "settings" -> bottomNavList.find { it.route == "settings" }?.name
                 "login" -> "登录" // 由于登录界面不在bottomBar里面，故使用硬编码
                 "register" -> "注册"
+                "about" -> "关于"
                 else -> currentTitle
             }
             if (newTitle != null) {
@@ -154,6 +153,10 @@ fun App() {
 
                 composable("register") {
                     RegisterScreen(navController)
+                }
+
+                composable("about") {
+                    AboutScreen()
                 }
             }
         }
