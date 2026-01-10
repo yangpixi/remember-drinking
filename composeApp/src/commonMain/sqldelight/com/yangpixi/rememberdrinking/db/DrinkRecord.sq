@@ -14,7 +14,7 @@ VALUES (?, ?);
 selectAllByTimeRange:
 SELECT *
 FROM water_intake_record
-WHERE record_time >= ? AND record_time < ? AND is_deleted = 0
+WHERE record_time >= ? AND record_time < ?
 ORDER BY record_time DESC;
 
 selectTotalDrinkToday:
@@ -25,4 +25,9 @@ WHERE record_time >= ? AND record_time < ? AND is_deleted = 0;
 softDeleteById:
 UPDATE water_intake_record
 SET is_deleted = 1
+WHERE id = ?;
+
+restoreById:
+UPDATE water_intake_record
+SET is_deleted = 0
 WHERE id = ?;
