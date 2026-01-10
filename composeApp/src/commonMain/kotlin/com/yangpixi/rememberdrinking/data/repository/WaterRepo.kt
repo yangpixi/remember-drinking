@@ -75,4 +75,16 @@ class WaterRepo(
             .map { it?.SUM ?: 0 }
     }
 
+    // 软取消喝水记录
+    fun cancelRecord(id: Long) {
+        val query = database.drinkRecordQueries
+        query.softDeleteById(id)
+    }
+
+    // 恢复之前取消的记录
+    fun restoreRecord(id: Long) {
+        val query = database.drinkRecordQueries
+        query.restoreById(id)
+    }
+
 }
