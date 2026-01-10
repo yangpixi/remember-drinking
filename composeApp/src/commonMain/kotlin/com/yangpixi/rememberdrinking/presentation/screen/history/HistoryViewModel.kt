@@ -27,5 +27,12 @@ class HistoryViewModel(
 
     val todayRecordList: StateFlow<List<WaterRecord>> = _todayRecordList
 
+    fun cancelRecord(id: Long) {
+        waterRepo.cancelRecord(id)
+    }
+
+    fun restoreRecord(id: Long) {
+        waterRepo.restoreRecord(id)
+    }
 
 }
