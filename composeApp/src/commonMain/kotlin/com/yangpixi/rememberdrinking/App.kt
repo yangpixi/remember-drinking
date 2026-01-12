@@ -23,6 +23,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.compose.AppTheme
+import com.yangpixi.rememberdrinking.platform.NotificationScheduler
 import com.yangpixi.rememberdrinking.presentation.component.BottomBar
 import com.yangpixi.rememberdrinking.presentation.component.BottomNavItem
 import com.yangpixi.rememberdrinking.presentation.component.TopBar
@@ -33,6 +34,7 @@ import com.yangpixi.rememberdrinking.presentation.screen.history.HistoryScreen
 import com.yangpixi.rememberdrinking.presentation.screen.home.HomeScreen
 import com.yangpixi.rememberdrinking.presentation.screen.settings.SettingsScreen
 import com.yangpixi.rememberdrinking.util.GlobalSnackBarUtils
+import kotlinx.coroutines.launch
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.koinInject
 
@@ -44,8 +46,20 @@ fun App() {
     val snackbarHostState = remember { SnackbarHostState() } //使用snackbar替代原生Toast
     val navController = rememberNavController() //获取navController供NavHost使用
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
-
     val globalSnackBarUtils = koinInject<GlobalSnackBarUtils>()
+    val scheduler = koinInject<NotificationScheduler>()
+    val scope = rememberCoroutineScope()
+
+    scope.launch {
+        scheduler.requestPermission()
+        scheduler.scheduleNotification(
+            title = "Reminder",
+            content = "记得喝水哦",
+            id = 0,
+            delayMillis = 114514
+        )
+    }
+
 
     LaunchedEffect(Unit) {
         globalSnackBarUtils.uiEvent.collect { ele ->

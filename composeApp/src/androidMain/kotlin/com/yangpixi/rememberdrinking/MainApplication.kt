@@ -15,6 +15,16 @@ import org.koin.core.context.startKoin
 class MainApplication : Application() {
     override fun onCreate() {
         super.onCreate()
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            val channel = android.app.NotificationChannel(
+                "drink_channel",
+                "reminder",
+                android.app.NotificationManager.IMPORTANCE_HIGH
+            )
+            getSystemService(android.app.NotificationManager::class.java).createNotificationChannel(channel)
+        }
+
         startKoin {
             modules(appModule())
             androidLogger()
