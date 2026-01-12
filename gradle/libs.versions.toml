@@ -22,8 +22,10 @@ kotlinxDatetime = "0.7.1"
 sql-delight = "2.2.1"
 coilCompose = "3.3.0"
 coilNetworkKtor3 = "3.3.0"
+workRuntimeKtx = "2.11.0"
 
 [libraries]
+androidx-work-runtime-ktx = { module = "androidx.work:work-runtime-ktx", version.ref = "workRuntimeKtx" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 kotlin-testJunit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
 junit = { module = "junit:junit", version.ref = "junit" }
