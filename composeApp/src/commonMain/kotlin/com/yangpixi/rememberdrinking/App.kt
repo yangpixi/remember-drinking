@@ -56,7 +56,7 @@ fun App() {
             title = "Reminder",
             content = "记得喝水哦",
             id = 0,
-            delayMillis = 114514
+            delayMillis = 1 * 60 * 60 * 1000 // 默认为一小时提醒一次
         )
     }
 

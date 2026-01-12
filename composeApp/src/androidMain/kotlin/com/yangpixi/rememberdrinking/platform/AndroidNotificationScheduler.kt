@@ -28,8 +28,8 @@ class AndroidNotificationScheduler(
             .build()
         
         val workRequest = PeriodicWorkRequestBuilder<NotificationWorker>(
-            repeatInterval = 1,
-            repeatIntervalTimeUnit = TimeUnit.HOURS
+            repeatInterval = delayMillis,
+            repeatIntervalTimeUnit = TimeUnit.MILLISECONDS
         )
             .setInputData(inputData)
             .build()
