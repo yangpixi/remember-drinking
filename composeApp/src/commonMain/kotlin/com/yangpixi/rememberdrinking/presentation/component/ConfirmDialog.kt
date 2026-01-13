@@ -46,7 +46,7 @@ fun CancelConfirmDialog(
                 .padding(20.dp),
             shape = RoundedCornerShape(24.dp),
             elevation = CardDefaults.cardElevation(10.dp),
-            colors = CardDefaults.cardColors(MaterialTheme.colorScheme.secondaryContainer)
+            colors = CardDefaults.cardColors(MaterialTheme.colorScheme.surfaceContainerHigh)
         ) {
             Column(
                 modifier = Modifier.padding(22.dp)
@@ -100,7 +100,7 @@ fun RestoreConfirmDialog(
                 .padding(20.dp),
             shape = RoundedCornerShape(24.dp),
             elevation = CardDefaults.cardElevation(10.dp),
-            colors = CardDefaults.cardColors(MaterialTheme.colorScheme.secondaryContainer)
+            colors = CardDefaults.cardColors(MaterialTheme.colorScheme.surfaceContainerHigh)
         ) {
             Column(
                 modifier = Modifier.padding(22.dp)

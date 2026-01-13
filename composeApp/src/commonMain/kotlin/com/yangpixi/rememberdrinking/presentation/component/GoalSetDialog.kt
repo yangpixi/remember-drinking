@@ -56,7 +56,7 @@ fun GoalSetDialog(
                 .padding(20.dp),
             shape = RoundedCornerShape(24.dp),
             elevation = CardDefaults.cardElevation(10.dp),
-            colors = CardDefaults.cardColors(MaterialTheme.colorScheme.secondaryContainer)
+            colors = CardDefaults.cardColors(MaterialTheme.colorScheme.surfaceContainerHigh)
         ) {
             Column(
                 modifier = Modifier
