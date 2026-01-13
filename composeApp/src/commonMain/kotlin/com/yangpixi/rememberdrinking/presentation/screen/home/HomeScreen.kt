@@ -28,6 +28,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.yangpixi.rememberdrinking.presentation.component.AmountItem
+import com.yangpixi.rememberdrinking.presentation.component.DrinkAmountDialog
 import com.yangpixi.rememberdrinking.presentation.component.GoalSetDialog
 import com.yangpixi.rememberdrinking.presentation.component.ProgressCircle
 import org.jetbrains.compose.resources.stringResource
@@ -50,25 +52,56 @@ fun HomeScreen(
 
     val goal by viewModel.goal.collectAsState()
     val current by viewModel.totalWater.collectAsState()
-    var showDialog by remember { mutableStateOf(false) }
+    var showGoalDialog by remember { mutableStateOf(false) }
     var goalValue by remember { mutableStateOf("") }
+    var showAmountDialog by remember { mutableStateOf(false) }
 
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
-        if (showDialog) {
-            GoalSetDialog(onDismissRequest = {
-                showDialog = false
-            }, onValueChange = { input ->
-                if (input.isBlank()) {
-                    goalValue = "0"
-                } else if (input.matches(Regex("^[0-9]*\$"))) {
-                    goalValue = input
-                }
-            }, onConfirmRequest = {
-                viewModel.setOrUpdateGoal(goalValue.toInt())
-                showDialog = false
-            }, value = goalValue)
+        if (showGoalDialog) {
+            GoalSetDialog(
+                onDismissRequest = {
+                    showGoalDialog = false
+                }, onValueChange = { input ->
+                    if (input.isBlank()) {
+                        goalValue = "0"
+                    } else if (input.matches(Regex("^[0-9]*\$"))) {
+                        goalValue = input
+                    }
+                }, onConfirmRequest = {
+                    viewModel.setOrUpdateGoal(goalValue.toInt())
+                    showGoalDialog = false
+                }, value = goalValue
+            )
+        }
+
+        // 定义喝水量列表
+        val itemList = listOf(
+            AmountItem(50, 0),
+            AmountItem(100, 1),
+            AmountItem(150, 2),
+            AmountItem(200, 3),
+            AmountItem(300, 4)
+        )
+
+        var selected by remember { mutableStateOf(itemList.first().id) }
+
+        if (showAmountDialog) {
+            DrinkAmountDialog(
+                onDismissRequest = {
+                    showAmountDialog = false
+                },
+                onConfirmRequest = {
+                    viewModel.updateProgress(itemList.get(selected).amount.toLong())
+                    showAmountDialog = false
+                },
+                onChangeRequest = { id ->
+                    selected = id
+                },
+                selected = selected,
+                itemList = itemList
+            )
         }
 
         Column {
@@ -149,7 +182,7 @@ fun HomeScreen(
                     ) {
                         Button(
                             onClick = {
-                                viewModel.updateProgress(200)
+                                showAmountDialog = true
                             },
                         ) {
                             Text("已经喝水啦")
@@ -157,7 +190,7 @@ fun HomeScreen(
                         Spacer(modifier = Modifier.weight(1f))
 
                         Button(
-                            onClick = { showDialog = true },
+                            onClick = { showGoalDialog = true },
                         ) {
                             Text("设置目标")
                         }
