@@ -1,4 +1,4 @@
-package com.yangpixi.rememberdrinking.data.dto
+package com.yangpixi.rememberdrinking.data.exception
 
 /**
  * @author yangpixi
