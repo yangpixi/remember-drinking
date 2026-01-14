@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -22,11 +23,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil3.compose.AsyncImage
+import com.yangpixi.rememberdrinking.BuildConfig
+import com.yangpixi.rememberdrinking.domain.model.User
+import com.yangpixi.rememberdrinking.presentation.screen.UiState.UiState
 import com.yangpixi.rememberdrinking.util.AuthManager
-import org.koin.compose.koinInject
+import org.koin.compose.viewmodel.koinViewModel
 
 /**
  * @author yangpixi
@@ -39,20 +44,39 @@ fun SettingsScreen(
     navController: NavController
 ) {
 
-    val authManager = koinInject<AuthManager>()
-    val authStatus by authManager.authStatus.collectAsState()
+    val viewModel = koinViewModel<SettingsViewModel>()
+    val authStatus by viewModel.authStatus.collectAsState()
+    val uiState by viewModel.uiState.collectAsState()
 
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
         when (authStatus) {
             is AuthManager.AuthStatus.Authenticated -> {
-                LoginStatusComponent(
-                    avatarUrl = "https://upload.wikimedia.org/wikipedia/commons/1/1f/Oryctolagus_cuniculus_Rcdo.jpg",
-                    username = "yangpixi",
-                    onClick = { navController.navigate("login") }
-                )
+                when (uiState) {
+                    is UiState.Loading -> {
+                        CircularProgressIndicator()
+                    }
+
+                    is UiState.Success -> {
+                        val user = (uiState as UiState.Success<User>).data
+                        LoginStatusComponent(
+                            avatarUrl = BuildConfig.BASE_URL + user.avatar,
+                            username = user.username,
+                            onClick = { navController.navigate("profile") }
+                        )
+                    }
+
+                    is UiState.Error -> {
+                        Text(
+                            modifier = Modifier.fillMaxWidth(),
+                            textAlign = TextAlign.Center,
+                            text = "${"出现错误"}: ${(uiState as UiState.Error).exception.message}"
+                        )
+                    }
+                }
             }
+
             else -> {
                 LoginStatusComponent(
                     avatarUrl = "https://upload.wikimedia.org/wikipedia/zh/e/e5/Gawr_Gura.png",

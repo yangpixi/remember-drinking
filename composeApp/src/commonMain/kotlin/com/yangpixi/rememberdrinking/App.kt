@@ -32,6 +32,7 @@ import com.yangpixi.rememberdrinking.presentation.screen.auth.login.LoginScreen
 import com.yangpixi.rememberdrinking.presentation.screen.auth.register.RegisterScreen
 import com.yangpixi.rememberdrinking.presentation.screen.history.HistoryScreen
 import com.yangpixi.rememberdrinking.presentation.screen.home.HomeScreen
+import com.yangpixi.rememberdrinking.presentation.screen.profile.ProfileScreen
 import com.yangpixi.rememberdrinking.presentation.screen.settings.SettingsScreen
 import com.yangpixi.rememberdrinking.util.GlobalSnackBarUtils
 import kotlinx.coroutines.launch
@@ -59,7 +60,6 @@ fun App() {
             delayMillis = 1 * 60 * 60 * 1000 // 默认为一小时提醒一次
         )
     }
-
 
     LaunchedEffect(Unit) {
         globalSnackBarUtils.uiEvent.collect { ele ->
@@ -96,6 +96,7 @@ fun App() {
                 "login" -> "登录" // 由于登录界面不在bottomBar里面，故使用硬编码
                 "register" -> "注册"
                 "about" -> "关于"
+                "profile" -> "资料"
                 else -> currentTitle
             }
             if (newTitle != null) {
@@ -171,6 +172,10 @@ fun App() {
 
                 composable("about") {
                     AboutScreen()
+                }
+
+                composable("profile") {
+                    ProfileScreen()
                 }
             }
         }

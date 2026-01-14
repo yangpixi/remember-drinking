@@ -31,7 +31,7 @@ import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.viewmodel.koinViewModel
 import rememberdrinking.composeapp.generated.resources.Res
-import rememberdrinking.composeapp.generated.resources.app_logo
+import rememberdrinking.composeapp.generated.resources.drop
 
 /**
  * @author yangpixi
@@ -60,7 +60,7 @@ fun LoginScreen(
         Spacer(modifier = Modifier.height(20.dp))
 
         Image(
-            painter = painterResource(Res.drawable.app_logo),
+            painter = painterResource(Res.drawable.drop),
             contentDescription = null,
             modifier = Modifier
                 .height(100.dp)
