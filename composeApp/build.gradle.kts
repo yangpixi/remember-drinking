@@ -75,6 +75,7 @@ kotlin {
             implementation(libs.sql.delight.coroutines.extensions)
             implementation(libs.coil.compose)
             implementation(libs.coil.network.ktor3)
+            implementation(libs.coil.svg)
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)

@@ -27,7 +27,7 @@ class NotificationWorker(context: Context, params: WorkerParameters) : Worker(co
 
         try {
             val builder = NotificationCompat.Builder(applicationContext, "drink_channel")
-                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setSmallIcon(R.drawable.icon_launcher_foreground)
                 .setContentTitle(title)
                 .setContentText(content)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
