@@ -48,8 +48,7 @@ class LoginViewModel(
 
             globalSnackBarUtils.sendEvent("正在登录")
         } catch (e: Exception) {
-            println(e.message)
-            globalSnackBarUtils.sendEvent("登录失败!")
+            globalSnackBarUtils.sendEvent(e.message!!)
         }
     }
 
