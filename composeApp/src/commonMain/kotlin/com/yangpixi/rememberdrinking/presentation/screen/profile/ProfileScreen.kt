@@ -25,6 +25,9 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil3.compose.AsyncImage
 import com.yangpixi.rememberdrinking.BuildConfig
+import io.github.vinceglb.filekit.dialogs.FileKitMode
+import io.github.vinceglb.filekit.dialogs.FileKitType
+import io.github.vinceglb.filekit.dialogs.compose.rememberFilePickerLauncher
 import org.koin.compose.viewmodel.koinViewModel
 
 /**
@@ -42,6 +45,13 @@ fun ProfileScreen(
 
     val currentUser by viewModel.currentUser.collectAsState()
 
+    val launcher = rememberFilePickerLauncher(
+        type = FileKitType.Image,
+        mode = FileKitMode.Single
+    ) { file ->
+        viewModel.doUpdateAvatar(file) // 不能使用断言，否则会出现NPE
+    }
+
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -56,6 +66,9 @@ fun ProfileScreen(
                 modifier = Modifier
                     .size(80.dp)
                     .clip(CircleShape)
+                    .clickable(onClick = {
+                        launcher.launch()
+                    })
             )
 
             Spacer(modifier = Modifier.height(12.dp))
