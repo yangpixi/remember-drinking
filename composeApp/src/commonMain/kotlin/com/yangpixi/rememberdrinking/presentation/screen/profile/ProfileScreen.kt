@@ -22,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import coil3.compose.AsyncImage
 import com.yangpixi.rememberdrinking.BuildConfig
 import org.koin.compose.viewmodel.koinViewModel
@@ -33,7 +34,9 @@ import org.koin.compose.viewmodel.koinViewModel
  */
 
 @Composable
-fun ProfileScreen() {
+fun ProfileScreen(
+    navController: NavController
+) {
 
     val viewModel = koinViewModel<ProfileViewModel>()
 
@@ -97,6 +100,24 @@ fun ProfileScreen() {
                         .clip(shape = RoundedCornerShape(24.dp))
                         .clickable(onClick = {
 
+                        })
+                        .padding(10.dp),
+                    style = MaterialTheme.typography.bodyLarge
+                )
+
+                HorizontalDivider(
+                    modifier = Modifier
+                        .padding(10.dp, 5.dp)
+                )
+
+                Text(
+                    text = "退出登录",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(shape = RoundedCornerShape(24.dp))
+                        .clickable(onClick = {
+                            viewModel.doLogout()
+                            navController.navigate("settings")
                         })
                         .padding(10.dp),
                     style = MaterialTheme.typography.bodyLarge
