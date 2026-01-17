@@ -175,7 +175,7 @@ fun App() {
                 }
 
                 composable("profile") {
-                    ProfileScreen()
+                    ProfileScreen(navController = navController)
                 }
             }
         }
