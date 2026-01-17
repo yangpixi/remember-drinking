@@ -7,7 +7,7 @@ import kotlin.coroutines.resume
 /**
  * @author yangpixi
  * @date 2026/1/12 14:13
- * @description ios平台通知实现
+ * @description ios平台通知实现,暂未实现固定时间段内提醒
  */
 
 class IosNotificationScheduler : NotificationScheduler {
