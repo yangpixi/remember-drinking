@@ -133,8 +133,8 @@ fun LoginScreen(
                         usernameValue,
                         passwordValue
                     )
+                    navController.popBackStack() // 不能放在launch外面，否则可能在ui界面销毁后调用协程，导致生命周期不匹配
                 }
-                navController.popBackStack()
             },
             modifier = Modifier.fillMaxWidth()
         ) {
