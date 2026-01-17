@@ -25,9 +25,9 @@ import kotlinx.serialization.json.Json
 
 fun getClient(
     authManager: AuthManager
-) : HttpClient {
+): HttpClient {
     // 提取公共json配置
-    val jsonConfig = Json{
+    val jsonConfig = Json {
         prettyPrint = true
         isLenient = true
         ignoreUnknownKeys = true
@@ -51,8 +51,12 @@ fun getClient(
         install(Auth) {
             bearer {
                 loadTokens {
-                    val token = authManager.getToken() ?: ""
-                    BearerTokens(token, "")
+                    val token = authManager.getToken()
+                    if (token.isNullOrBlank()) {
+                        null
+                    } else {
+                        BearerTokens(token, "")
+                    }
                 }
             }
         }
