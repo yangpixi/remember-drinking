@@ -1,7 +1,10 @@
 package com.yangpixi.rememberdrinking.presentation.screen.profile
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.yangpixi.rememberdrinking.data.repository.UserRepoImpl
+import com.yangpixi.rememberdrinking.util.AuthManager
+import kotlinx.coroutines.launch
 
 /**
  * @author yangpixi
@@ -10,7 +13,14 @@ import com.yangpixi.rememberdrinking.data.repository.UserRepoImpl
  */
 
 class ProfileViewModel(
-    userRepo: UserRepoImpl
+    userRepo: UserRepoImpl,
+    private val authManager: AuthManager
 ) : ViewModel() {
     val currentUser = userRepo.currentUser
+
+    fun doLogout() {
+        viewModelScope.launch {
+            authManager.removeToken()
+        }
+    }
 }
