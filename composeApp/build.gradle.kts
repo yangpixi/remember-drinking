@@ -43,6 +43,7 @@ kotlin {
             implementation(libs.kotlinx.coroutines.android)
             implementation(libs.sql.delight.android)
             implementation(libs.androidx.work.runtime.ktx)
+            implementation(libs.koin.androidx.workmanager)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -56,7 +57,6 @@ kotlin {
             implementation(libs.kotlinx.datetime)
             implementation(project.dependencies.platform(libs.koin.bom))
             implementation(libs.koin.core)
-            implementation(project.dependencies.platform("io.insert-koin:koin-bom"))
             implementation(libs.insert.koin.koin.compose)
             implementation(libs.insert.koin.koin.compose.viewmodel)
             implementation(libs.kotlinx.serialization.core)
@@ -79,6 +79,7 @@ kotlin {
             implementation(libs.filekit.core)
             implementation(libs.filekit.dialogs)
             implementation(libs.filekit.dialogs.compose)
+            implementation("com.benasher44:uuid:0.8.4")
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
