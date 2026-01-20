@@ -4,7 +4,9 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import app.cash.sqldelight.db.SqlDriver
 import com.yangpixi.rememberdrinking.data.api.AuthApi
+import com.yangpixi.rememberdrinking.data.api.RecordApi
 import com.yangpixi.rememberdrinking.data.api.UserApi
+import com.yangpixi.rememberdrinking.data.repository.RecordRepoImpl
 import com.yangpixi.rememberdrinking.data.repository.UserRepoImpl
 import com.yangpixi.rememberdrinking.data.repository.WaterRepo
 import com.yangpixi.rememberdrinking.db.Database
@@ -88,4 +90,7 @@ val commonModule = module {
 
     // 资料界面Profile
     viewModelOf(::ProfileViewModel)
+
+    singleOf(::RecordApi)
+    singleOf(::RecordRepoImpl)
 }

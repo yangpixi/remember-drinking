@@ -4,8 +4,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.yangpixi.rememberdrinking.data.repository.UserRepoImpl
 import com.yangpixi.rememberdrinking.domain.model.User
+import com.yangpixi.rememberdrinking.platform.RecordSchedule
 import com.yangpixi.rememberdrinking.presentation.screen.UiState.UiState
 import com.yangpixi.rememberdrinking.util.AuthManager
+import com.yangpixi.rememberdrinking.util.GlobalSnackBarUtils
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
@@ -20,7 +22,9 @@ import kotlinx.coroutines.launch
 
 class SettingsViewModel(
     private val userRepo: UserRepoImpl,
-    private val authManager: AuthManager
+    private val authManager: AuthManager,
+    private val globalSnackBarUtils: GlobalSnackBarUtils,
+    private val recordSchedule: RecordSchedule
 ) : ViewModel() {
 
     val authStatus = authManager.authStatus
@@ -32,6 +36,7 @@ class SettingsViewModel(
             user != null -> {
                 UiState.Success(user)
             }
+
             else -> {
                 UiState.Loading
             }
@@ -51,8 +56,22 @@ class SettingsViewModel(
                 auth is AuthManager.AuthStatus.Authenticated && user == null
             }.collect { res ->
                 if (res) {
-                    userRepo.getCurrentUser()
+                    try {
+                        userRepo.getCurrentUser()
+                    } catch (e: Exception) {
+                        globalSnackBarUtils.sendEvent("服务器连接失败，请稍后再试")
+                    }
                 }
+            }
+        }
+    }
+
+    fun doUpload() {
+        viewModelScope.launch {
+            if (authStatus.value is AuthManager.AuthStatus.Unauthenticated) {
+                globalSnackBarUtils.sendEvent("请先登录")
+            } else {
+                recordSchedule.doUploadRecordsWork()
             }
         }
     }

@@ -100,7 +100,9 @@ fun SettingsScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .clip(shape = RoundedCornerShape(24.dp))
-                        .clickable(onClick = {})
+                        .clickable(onClick = {
+                            viewModel.doUpload()
+                        })
                         .padding(10.dp),
                     style = MaterialTheme.typography.bodyLarge
                 )
