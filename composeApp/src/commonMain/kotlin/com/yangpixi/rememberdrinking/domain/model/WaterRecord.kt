@@ -8,7 +8,9 @@ package com.yangpixi.rememberdrinking.domain.model
 
 data class WaterRecord(
     val id: Long,
+    val recordId: String,
     val amountMl: Long,
     val recordTime: Long,
-    val isDeleted: Boolean
+    val isDeleted: Boolean,
+    val isUploaded: Boolean
 )

@@ -3,12 +3,14 @@ package com.yangpixi.rememberdrinking.data.repository
 import app.cash.sqldelight.coroutines.asFlow
 import app.cash.sqldelight.coroutines.mapToList
 import app.cash.sqldelight.coroutines.mapToOneOrNull
+import com.benasher44.uuid.uuid4
 import com.yangpixi.rememberdrinking.db.Database
 import com.yangpixi.rememberdrinking.domain.model.WaterRecord
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.toList
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.atStartOfDayIn
@@ -33,7 +35,8 @@ class WaterRepo(
     fun doDrink(intake: Long) {
         val query = database.drinkRecordQueries
         val currentTime = Clock.System.now().toEpochMilliseconds()
-        query.insertRecord(intake, currentTime)
+        val uuid = uuid4().toString()
+        query.insertRecord(uuid, intake, currentTime)
     }
 
     // 获取当日喝水记录
@@ -51,8 +54,8 @@ class WaterRepo(
         return query.selectAllByTimeRange(
             startTime,
             endTime,
-            mapper = { id, amount_ml, record_time, is_deleted ->
-                WaterRecord(id, amount_ml, record_time, is_deleted)
+            mapper = { id, record_id, amount_ml, record_time, is_deleted, is_uploaded ->
+                WaterRecord(id, record_id, amount_ml, record_time, is_deleted, is_uploaded)
             })
             .asFlow()
             .mapToList(Dispatchers.IO)
@@ -85,6 +88,15 @@ class WaterRepo(
     fun restoreRecord(id: Long) {
         val query = database.drinkRecordQueries
         query.restoreById(id)
+    }
+
+    fun getUnUploadedRecords(): List<WaterRecord> {
+        val query = database.drinkRecordQueries
+        return query.selectUnUploadedRecords(
+            mapper = { id, record_id, amount_ml, record_time, is_deleted, is_uploaded ->
+                WaterRecord(id, record_id, amount_ml, record_time, is_deleted, is_uploaded)
+            }
+        ).executeAsList()
     }
 
 }
