@@ -14,10 +14,13 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -39,14 +42,24 @@ import org.koin.compose.viewmodel.koinViewModel
  * @description 设置界面
  */
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(
-    navController: NavController
+    navController: NavController,
+    scrollBehavior: TopAppBarScrollBehavior
 ) {
 
     val viewModel = koinViewModel<SettingsViewModel>()
     val authStatus by viewModel.authStatus.collectAsState()
     val uiState by viewModel.uiState.collectAsState()
+
+    // 因为使用的是全局topBarScrollState，因此当登录的时候如果滑动了，state将会保持，
+    // 无法在返回设置界面的时候重置，故将父组件的state传递下来进行设置
+    // 此方法并不优雅
+    // 更好的方法是使用全局bottomBar+ per topBar
+    LaunchedEffect(Unit) {
+        scrollBehavior.state.heightOffset = 0f
+    }
 
     Column(
         modifier = Modifier.fillMaxSize()
