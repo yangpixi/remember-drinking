@@ -8,6 +8,7 @@ import com.yangpixi.rememberdrinking.data.dto.RecordDTO
 import com.yangpixi.rememberdrinking.data.dto.RecordDataDTO
 import com.yangpixi.rememberdrinking.data.repository.RecordRepoImpl
 import com.yangpixi.rememberdrinking.data.repository.WaterRepo
+import com.yangpixi.rememberdrinking.util.GlobalSnackBarUtils
 
 /**
  * @author yangpixi
@@ -20,6 +21,7 @@ class AndroidUploadRecordsWorker(
     params: WorkerParameters,
     private val waterRepo: WaterRepo,
     private val recordRepo: RecordRepoImpl,
+    private val globalSnackBarUtils: GlobalSnackBarUtils
 ) : CoroutineWorker(context, params){
 
     override suspend fun doWork(): Result {
@@ -39,8 +41,10 @@ class AndroidUploadRecordsWorker(
 
         try {
             recordRepo.uploadRecord(RecordDTO(recordList))
+            recordRepo.markAsUpload(records)
         } catch (e: Exception) {
             Log.e("上传失败", e.message ?: "")
+            globalSnackBarUtils.sendEvent("上传失败，请稍后重试")
             return Result.retry()
         }
         return Result.success()

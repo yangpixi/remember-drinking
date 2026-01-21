@@ -1,6 +1,7 @@
 package com.yangpixi.rememberdrinking.domain.repository
 
 import com.yangpixi.rememberdrinking.data.dto.RecordDTO
+import com.yangpixi.rememberdrinking.domain.model.WaterRecord
 
 /**
  * @author yangpixi
@@ -10,4 +11,6 @@ import com.yangpixi.rememberdrinking.data.dto.RecordDTO
 
 interface RecordRepo {
     suspend fun uploadRecord(records: RecordDTO)
+
+    suspend fun markAsUpload(records: List<WaterRecord>)
 }

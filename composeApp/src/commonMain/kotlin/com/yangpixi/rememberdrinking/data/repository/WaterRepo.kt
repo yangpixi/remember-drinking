@@ -98,4 +98,9 @@ class WaterRepo(
         ).executeAsList()
     }
 
+    fun markUnUploadedRecord(id: Long) {
+        val query = database.drinkRecordQueries
+        query.markAsUploaded(id)
+    }
+
 }

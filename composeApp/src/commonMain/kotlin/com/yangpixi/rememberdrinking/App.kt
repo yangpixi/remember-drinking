@@ -159,7 +159,7 @@ fun App() {
                 }
 
                 composable("settings") {
-                    SettingsScreen(navController)
+                    SettingsScreen(navController, scrollBehavior)
                 }
 
                 composable("login") {
