@@ -1,6 +1,6 @@
 CREATE TABLE water_intake_record (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    record_id TEXT NOT NULL,
+    record_id TEXT NOT NULL UNIQUE,
     amount_ml INTEGER NOT NULL CHECK (amount_ml > 0),
     record_time INTEGER NOT NULL,
     is_deleted INTEGER AS kotlin.Boolean NOT NULL DEFAULT 0 CHECK (is_deleted IN (0, 1)),
@@ -9,9 +9,9 @@ CREATE TABLE water_intake_record (
 
 CREATE INDEX idx_water_record_time ON water_intake_record(record_time);
 
-insertRecord:
-INSERT INTO water_intake_record(record_id, amount_ml, record_time)
-VALUES (?, ?, ?);
+insertOrUpdateRecord:
+INSERT OR REPLACE INTO water_intake_record(record_id, amount_ml, record_time, is_deleted, is_uploaded)
+VALUES (?, ?, ?, ?, ?);
 
 selectAllByTimeRange:
 SELECT *

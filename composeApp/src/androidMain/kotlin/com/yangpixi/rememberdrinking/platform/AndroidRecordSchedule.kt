@@ -13,21 +13,21 @@ import java.util.concurrent.TimeUnit
 /**
  * @author yangpixi
  * @date 2026/1/20 15:15
- * @description
+ * @description workRequest类
  */
 
 class AndroidRecordSchedule(
     private val context: Context,
     private val globalSnackBarUtils: GlobalSnackBarUtils
 ) : RecordSchedule {
-    override suspend fun doUploadRecordsWork() {
-        globalSnackBarUtils.sendEvent("开始上传喝水记录")
+    override suspend fun doSyncRecordsWork() {
+        globalSnackBarUtils.sendEvent("开始同步喝水记录")
 
         val constraints = Constraints.Builder()
             .setRequiredNetworkType(NetworkType.CONNECTED)
             .build()
 
-        val workRequest = OneTimeWorkRequestBuilder<AndroidUploadRecordsWorker>()
+        val workRequest = OneTimeWorkRequestBuilder<AndroidSyncRecordsWorker>()
             .setConstraints(constraints)
             .setBackoffCriteria(
                 BackoffPolicy.EXPONENTIAL,
@@ -42,6 +42,6 @@ class AndroidRecordSchedule(
             workRequest
         )
 
-        globalSnackBarUtils.sendEvent("上传完毕")
+        globalSnackBarUtils.sendEvent("同步完毕")
     }
 }

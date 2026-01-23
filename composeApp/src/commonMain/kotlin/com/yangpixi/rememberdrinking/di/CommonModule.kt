@@ -10,6 +10,8 @@ import com.yangpixi.rememberdrinking.data.repository.RecordRepoImpl
 import com.yangpixi.rememberdrinking.data.repository.UserRepoImpl
 import com.yangpixi.rememberdrinking.data.repository.WaterRepo
 import com.yangpixi.rememberdrinking.db.Database
+import com.yangpixi.rememberdrinking.domain.repository.RecordRepo
+import com.yangpixi.rememberdrinking.domain.repository.UserRepo
 import com.yangpixi.rememberdrinking.presentation.screen.auth.login.LoginViewModel
 import com.yangpixi.rememberdrinking.presentation.screen.auth.register.RegisterViewModel
 import com.yangpixi.rememberdrinking.presentation.screen.history.HistoryViewModel
@@ -22,6 +24,7 @@ import com.yangpixi.rememberdrinking.util.getClient
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.module.dsl.viewModelOf
@@ -83,7 +86,9 @@ val commonModule = module {
 
     // 获取userRepo相关
     singleOf(::UserApi)
-    singleOf(::UserRepoImpl)
+    singleOf(::UserRepoImpl) {
+        bind<UserRepo>()
+    }
 
     // 设置viewModel
     viewModelOf(::SettingsViewModel)
@@ -92,5 +97,7 @@ val commonModule = module {
     viewModelOf(::ProfileViewModel)
 
     singleOf(::RecordApi)
-    singleOf(::RecordRepoImpl)
+    singleOf(::RecordRepoImpl) {
+        bind<RecordRepo>()
+    }
 }

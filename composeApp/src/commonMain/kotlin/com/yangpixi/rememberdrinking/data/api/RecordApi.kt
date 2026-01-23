@@ -2,6 +2,7 @@ package com.yangpixi.rememberdrinking.data.api
 
 import com.yangpixi.rememberdrinking.data.dto.RecordDTO
 import io.ktor.client.HttpClient
+import io.ktor.client.request.get
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.client.statement.HttpResponse
@@ -17,10 +18,14 @@ import io.ktor.http.contentType
 class RecordApi(
     private val client: HttpClient
 ) {
-    suspend fun doUploadRecord(records: RecordDTO): HttpResponse {
+    suspend fun doUploadRecord(records: List<RecordDTO>): HttpResponse {
         return client.post("record/upload") {
             contentType(ContentType.Application.Json)
             setBody(records)
         }
+    }
+
+    suspend fun fetchRecords(): HttpResponse {
+        return client.get("record")
     }
 }

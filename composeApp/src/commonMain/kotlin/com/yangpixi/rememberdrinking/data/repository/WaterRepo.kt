@@ -5,7 +5,7 @@ import app.cash.sqldelight.coroutines.mapToList
 import app.cash.sqldelight.coroutines.mapToOneOrNull
 import com.benasher44.uuid.uuid4
 import com.yangpixi.rememberdrinking.db.Database
-import com.yangpixi.rememberdrinking.domain.model.WaterRecord
+import com.yangpixi.rememberdrinking.domain.model.Record
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.Flow
@@ -35,12 +35,12 @@ class WaterRepo(
         val query = database.drinkRecordQueries
         val currentTime = Clock.System.now().toEpochMilliseconds()
         val uuid = uuid4().toString()
-        query.insertRecord(uuid, intake, currentTime)
+        query.insertOrUpdateRecord(uuid, intake, currentTime, false, false)
     }
 
     // 获取当日喝水记录
     @OptIn(ExperimentalTime::class)
-    fun getDrinkListToday(): Flow<List<WaterRecord>> {
+    fun getDrinkListToday(): Flow<List<Record>> {
         val timeZone = TimeZone.currentSystemDefault()
         val todayTime = Clock.System.now().toLocalDateTime(timeZone).date
         val startTime = todayTime.atStartOfDayIn(timeZone).toEpochMilliseconds()
@@ -54,7 +54,7 @@ class WaterRepo(
             startTime,
             endTime,
             mapper = { id, record_id, amount_ml, record_time, is_deleted, is_uploaded ->
-                WaterRecord(id, record_id, amount_ml, record_time, is_deleted, is_uploaded)
+                Record(id, record_id, amount_ml, record_time, is_deleted, is_uploaded)
             })
             .asFlow()
             .mapToList(Dispatchers.IO)
@@ -89,18 +89,27 @@ class WaterRepo(
         query.restoreById(id)
     }
 
-    fun getUnUploadedRecords(): List<WaterRecord> {
+    // 获取未上传的记录
+    fun getUnUploadedRecords(): List<Record> {
         val query = database.drinkRecordQueries
         return query.selectUnUploadedRecords(
             mapper = { id, record_id, amount_ml, record_time, is_deleted, is_uploaded ->
-                WaterRecord(id, record_id, amount_ml, record_time, is_deleted, is_uploaded)
+                Record(id, record_id, amount_ml, record_time, is_deleted, is_uploaded)
             }
         ).executeAsList()
     }
 
+    // 更新上传状态
     fun markUnUploadedRecord(id: Long) {
         val query = database.drinkRecordQueries
         query.markAsUploaded(id)
+    }
+
+    fun insertOrUpdateRecord(records: List<Record>) {
+        val query = database.drinkRecordQueries
+        records.forEach {
+            query.insertOrUpdateRecord(it.recordId, it.amountMl, it.recordTime, it.isDeleted, true)
+        }
     }
 
 }

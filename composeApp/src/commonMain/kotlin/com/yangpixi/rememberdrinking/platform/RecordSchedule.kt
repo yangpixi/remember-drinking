@@ -7,5 +7,5 @@ package com.yangpixi.rememberdrinking.platform
  */
 
 interface RecordSchedule {
-    suspend fun doUploadRecordsWork()
+    suspend fun doSyncRecordsWork()
 }

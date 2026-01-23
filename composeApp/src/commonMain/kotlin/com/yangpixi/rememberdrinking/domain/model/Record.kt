@@ -6,11 +6,11 @@ package com.yangpixi.rememberdrinking.domain.model
  * @description 数据表对应的实体类
  */
 
-data class WaterRecord(
-    val id: Long,
+data class Record(
+    val id: Long = 0L,
     val recordId: String,
     val amountMl: Long,
     val recordTime: Long,
-    val isDeleted: Boolean,
-    val isUploaded: Boolean
+    val isDeleted: Boolean = false,
+    val isUploaded: Boolean = false
 )

@@ -66,12 +66,12 @@ class SettingsViewModel(
         }
     }
 
-    fun doUpload() {
+    fun doSync() {
         viewModelScope.launch {
             if (authStatus.value is AuthManager.AuthStatus.Unauthenticated) {
                 globalSnackBarUtils.sendEvent("请先登录")
             } else {
-                recordSchedule.doUploadRecordsWork()
+                recordSchedule.doSyncRecordsWork()
             }
         }
     }

@@ -27,7 +27,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
-import com.yangpixi.rememberdrinking.domain.model.WaterRecord
+import com.yangpixi.rememberdrinking.domain.model.Record
 import com.yangpixi.rememberdrinking.presentation.component.CancelConfirmDialog
 import com.yangpixi.rememberdrinking.presentation.component.RestoreConfirmDialog
 import com.yangpixi.rememberdrinking.util.parseToDateTime
@@ -88,7 +88,7 @@ fun HistoryScreen() {
         ) {
             items(
                 items = recordList,
-                key = { record: WaterRecord -> record.id }
+                key = { record: Record -> record.id }
             ) {
                 DrinkItem(
                     amount = it.amountMl,

@@ -1,7 +1,6 @@
 package com.yangpixi.rememberdrinking.platform
 
 import com.yangpixi.rememberdrinking.data.dto.RecordDTO
-import com.yangpixi.rememberdrinking.data.dto.RecordDataDTO
 import com.yangpixi.rememberdrinking.data.repository.RecordRepoImpl
 import com.yangpixi.rememberdrinking.data.repository.WaterRepo
 import com.yangpixi.rememberdrinking.util.GlobalSnackBarUtils
@@ -26,10 +25,10 @@ class IosRecordSchedule(
 ) : RecordSchedule {
     private val scope = CoroutineScope(Dispatchers.Default + SupervisorJob())
 
-    override suspend fun doUploadRecordsWork() {
+    override suspend fun doSyncRecordsWork() {
         var taskId: UIBackgroundTaskIdentifier = UIBackgroundTaskInvalid
 
-        // 向 iOS 系统注册
+        // 向 iOS 系统注册，便于后台进行数据同步
         taskId = UIApplication.sharedApplication.beginBackgroundTaskWithExpirationHandler {
             UIApplication.sharedApplication.endBackgroundTask(taskId)
             taskId = UIBackgroundTaskInvalid
@@ -38,7 +37,7 @@ class IosRecordSchedule(
         scope.launch {
             val records = waterRepo.getUnUploadedRecords()
             val recordList = records.map { record ->
-                RecordDataDTO(
+                RecordDTO(
                     recordId = record.recordId,
                     amountMl = record.amountMl,
                     recordTime = record.recordTime,
@@ -46,18 +45,21 @@ class IosRecordSchedule(
                 )
             }.toList()
 
-            if (recordList.isEmpty()) {
-                globalSnackBarUtils.sendEvent("上传完毕")
-                return@launch
-            }
-
             try {
-                recordRepo.uploadRecord(RecordDTO(recordList))
+                recordRepo.uploadRecord(recordList)
                 recordRepo.markAsUpload(records)
-                globalSnackBarUtils.sendEvent("上传完毕")
             } catch (e: Exception) {
                 globalSnackBarUtils.sendEvent("上传失败，请稍后重试")
             }
+
+            try {
+                val records = recordRepo.getUserRecords().getOrThrow()
+                waterRepo.insertOrUpdateRecord(records)
+            } catch (e: Exception) {
+                globalSnackBarUtils.sendEvent("同步失败，请稍后再试")
+            }
+
+            globalSnackBarUtils.sendEvent("同步完毕")
         }
     }
 }

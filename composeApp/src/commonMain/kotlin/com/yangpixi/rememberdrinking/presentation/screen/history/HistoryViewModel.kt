@@ -3,7 +3,7 @@ package com.yangpixi.rememberdrinking.presentation.screen.history
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.yangpixi.rememberdrinking.data.repository.WaterRepo
-import com.yangpixi.rememberdrinking.domain.model.WaterRecord
+import com.yangpixi.rememberdrinking.domain.model.Record
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.stateIn
 class HistoryViewModel(
     private val waterRepo: WaterRepo
 ) : ViewModel() {
-    private val _todayRecordList: StateFlow<List<WaterRecord>> = waterRepo
+    private val _todayRecordList: StateFlow<List<Record>> = waterRepo
         .getDrinkListToday()
         .stateIn(
             scope = viewModelScope,
@@ -25,7 +25,7 @@ class HistoryViewModel(
             initialValue = emptyList()
         )
 
-    val todayRecordList: StateFlow<List<WaterRecord>> = _todayRecordList
+    val todayRecordList: StateFlow<List<Record>> = _todayRecordList
 
     fun cancelRecord(id: Long) {
         waterRepo.cancelRecord(id)

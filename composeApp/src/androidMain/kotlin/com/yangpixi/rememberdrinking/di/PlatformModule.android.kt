@@ -6,7 +6,7 @@ import app.cash.sqldelight.driver.android.AndroidSqliteDriver
 import com.yangpixi.rememberdrinking.db.Database
 import com.yangpixi.rememberdrinking.platform.AndroidNotificationScheduler
 import com.yangpixi.rememberdrinking.platform.AndroidRecordSchedule
-import com.yangpixi.rememberdrinking.platform.AndroidUploadRecordsWorker
+import com.yangpixi.rememberdrinking.platform.AndroidSyncRecordsWorker
 import com.yangpixi.rememberdrinking.platform.NotificationScheduler
 import com.yangpixi.rememberdrinking.platform.RecordSchedule
 import com.yangpixi.rememberdrinking.platform.createDataStore
@@ -29,7 +29,7 @@ actual val platformModule: Module = module {
         AndroidNotificationScheduler(get<Context>())
     }
 
-    workerOf(::AndroidUploadRecordsWorker)
+    workerOf(::AndroidSyncRecordsWorker)
     singleOf(::AndroidRecordSchedule) {
         bind<RecordSchedule>()
     }

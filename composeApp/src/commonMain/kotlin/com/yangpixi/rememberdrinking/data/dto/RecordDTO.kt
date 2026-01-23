@@ -10,15 +10,9 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class RecordDTO(
-    val recordList: List<RecordDataDTO>
-)
-
-@Serializable
-data class RecordDataDTO(
     val recordId: String? = null,
     val amountMl: Long? = null,
     val recordTime: Long? = null,
-    val isDeleted: Boolean? = null,
+    val isDeleted: Boolean? = null
 )
-
 
