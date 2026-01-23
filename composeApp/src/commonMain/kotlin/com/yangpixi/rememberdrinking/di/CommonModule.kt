@@ -43,9 +43,7 @@ val commonModule = module {
     }
 
     // homeViewModel获取
-    viewModel {
-        HomeViewModel(get<WaterRepo>(), get<DataStore<Preferences>>())
-    }
+    viewModelOf(::HomeViewModel)
 
     // 完成Database的注入
     single {
@@ -96,6 +94,7 @@ val commonModule = module {
     // 资料界面Profile
     viewModelOf(::ProfileViewModel)
 
+    // 记录相关注入
     singleOf(::RecordApi)
     singleOf(::RecordRepoImpl) {
         bind<RecordRepo>()
