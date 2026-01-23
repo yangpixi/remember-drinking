@@ -30,8 +30,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.yangpixi.rememberdrinking.presentation.component.GoalSetDialog
 import com.yangpixi.rememberdrinking.presentation.component.ProgressCircle
+import com.yangpixi.rememberdrinking.presentation.component.ValueSetDialog
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import rememberdrinking.composeapp.generated.resources.Res
@@ -60,19 +60,24 @@ fun HomeScreen(
         modifier = Modifier.fillMaxSize()
     ) {
         if (showGoalDialog) {
-            GoalSetDialog(
+            ValueSetDialog(
                 onDismissRequest = {
                     showGoalDialog = false
-                }, onValueChange = { input ->
+                },
+                onValueChange = { input ->
                     if (input.isBlank()) {
                         goalValue = ""
                     } else if (input.matches(Regex("^[0-9]*\$"))) {
                         goalValue = input
                     }
-                }, onConfirmRequest = {
+                },
+                onConfirmRequest = {
                     viewModel.setOrUpdateGoal(goalValue.toInt())
                     showGoalDialog = false
-                }, value = goalValue
+                },
+                value = goalValue,
+                title = "设置目标",
+                valueTitle = "目标"
             )
         }
 

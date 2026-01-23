@@ -16,10 +16,6 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
@@ -27,20 +23,21 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import org.jetbrains.compose.ui.tooling.preview.Preview
 
 /**
  * @author yangpixi
  * @date 2025/12/31 09:53
- * @description 设置喝水目标弹窗
+ * @description 通用设定数值组件
  */
 
 @Composable
-fun GoalSetDialog(
+fun ValueSetDialog(
     onDismissRequest: () -> Unit,
     onConfirmRequest: () -> Unit,
     onValueChange: (String) -> Unit,
-    value: String
+    value: String,
+    title: String,
+    valueTitle: String
 ) {
     Dialog(
         onDismissRequest = onDismissRequest,
@@ -63,8 +60,8 @@ fun GoalSetDialog(
                     .padding(15.dp)
             ) {
                 Text(
-                    text = "设置目标",
-                    style = MaterialTheme.typography.bodySmall
+                    text = title,
+                    style = MaterialTheme.typography.bodyMedium
                 )
 
                 Spacer(modifier = Modifier.height(16.dp))
@@ -73,7 +70,7 @@ fun GoalSetDialog(
                     value = value,
                     onValueChange = onValueChange,
                     label = {
-                        Text("目标")
+                        Text(valueTitle)
                     },
                     placeholder = {
                         Text("请输入")
@@ -106,9 +103,3 @@ fun GoalSetDialog(
     }
 }
 
-@Composable
-@Preview
-fun GoalSetDialogPreview() {
-    var value by remember { mutableStateOf("") }
-    GoalSetDialog({},{}, {}, value)
-}

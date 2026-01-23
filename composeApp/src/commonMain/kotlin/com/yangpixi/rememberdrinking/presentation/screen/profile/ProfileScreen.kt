@@ -18,6 +18,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -25,6 +28,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil3.compose.AsyncImage
 import com.yangpixi.rememberdrinking.BuildConfig
+import com.yangpixi.rememberdrinking.presentation.component.ChangePasswordDialog
+import com.yangpixi.rememberdrinking.presentation.component.ValueSetDialog
 import io.github.vinceglb.filekit.dialogs.FileKitMode
 import io.github.vinceglb.filekit.dialogs.FileKitType
 import io.github.vinceglb.filekit.dialogs.compose.rememberFilePickerLauncher
@@ -44,6 +49,10 @@ fun ProfileScreen(
     val viewModel = koinViewModel<ProfileViewModel>()
 
     val currentUser by viewModel.currentUser.collectAsState()
+    var showPhoneDialog by remember { mutableStateOf(false) }
+    var showPasswordDialog by remember { mutableStateOf(false) }
+
+    val phoneValue by viewModel.phoneValue.collectAsState()
 
     val launcher = rememberFilePickerLauncher(
         type = FileKitType.Image,
@@ -60,6 +69,42 @@ fun ProfileScreen(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+
+            if (showPhoneDialog) {
+                ValueSetDialog(
+                    onDismissRequest = {
+                        showPhoneDialog = false
+                    },
+                    onValueChange = { input ->
+                        if (input.isBlank()) {
+                            viewModel.updatePhoneValue("")
+                        } else if (input.matches(Regex("^[0-9]*\$"))) {
+                            viewModel.updatePhoneValue(input)
+                        }
+                    },
+                    onConfirmRequest = {
+                        viewModel.doUpdatePhone(phoneValue)
+                        showPhoneDialog = false
+
+                    },
+                    value = phoneValue,
+                    title = "设置手机号",
+                    valueTitle = "手机号"
+                )
+            }
+
+            if (showPasswordDialog) {
+                ChangePasswordDialog(
+                    onConfirm = { newPassword ->
+                        viewModel.doUpdatePassword(newPassword)
+                        showPasswordDialog = false
+                    },
+                    onDismiss = {
+                        showPasswordDialog = false
+                    }
+                )
+            }
+
             AsyncImage(
                 model = BuildConfig.BASE_URL + currentUser!!.avatar, // 能进入该页面，肯定存在数据
                 contentDescription = null,
@@ -95,7 +140,7 @@ fun ProfileScreen(
                         .fillMaxWidth()
                         .clip(shape = RoundedCornerShape(24.dp))
                         .clickable(onClick = {
-
+                            showPhoneDialog = true
                         })
                         .padding(10.dp),
                     style = MaterialTheme.typography.bodyLarge
@@ -112,7 +157,7 @@ fun ProfileScreen(
                         .fillMaxWidth()
                         .clip(shape = RoundedCornerShape(24.dp))
                         .clickable(onClick = {
-
+                            showPasswordDialog = true
                         })
                         .padding(10.dp),
                     style = MaterialTheme.typography.bodyLarge
