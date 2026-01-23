@@ -65,7 +65,7 @@ fun HomeScreen(
                     showGoalDialog = false
                 }, onValueChange = { input ->
                     if (input.isBlank()) {
-                        goalValue = "0"
+                        goalValue = ""
                     } else if (input.matches(Regex("^[0-9]*\$"))) {
                         goalValue = input
                     }

@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.yangpixi.rememberdrinking.BuildConfig
 import com.yangpixi.rememberdrinking.data.repository.WaterRepo
+import com.yangpixi.rememberdrinking.util.GlobalSnackBarUtils
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
@@ -21,7 +22,8 @@ import kotlinx.coroutines.launch
 
 class HomeViewModel(
     private val waterRepo: WaterRepo,
-    private val dataStore: DataStore<Preferences>
+    private val dataStore: DataStore<Preferences>,
+    private val globalSnackBarUtils: GlobalSnackBarUtils
 ) : ViewModel() {
     private val _goal: StateFlow<Int> = dataStore.data.map { preferences ->
         preferences[BuildConfig.GOAL_KEY] ?: 0
@@ -43,7 +45,11 @@ class HomeViewModel(
     val totalWater: StateFlow<Long> = _totalWater
 
     fun updateProgress(volume: Long) {
-        waterRepo.doDrink(volume)
+        if (_goal.value == 0) {
+            globalSnackBarUtils.sendEvent("请先设置喝水目标哦")
+        } else {
+            waterRepo.doDrink(volume)
+        }
     }
 
     fun setOrUpdateGoal(goal: Int) {
