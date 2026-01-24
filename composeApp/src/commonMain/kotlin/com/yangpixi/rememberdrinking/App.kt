@@ -35,6 +35,12 @@ import com.yangpixi.rememberdrinking.presentation.screen.home.HomeScreen
 import com.yangpixi.rememberdrinking.presentation.screen.profile.ProfileScreen
 import com.yangpixi.rememberdrinking.presentation.screen.settings.SettingsScreen
 import com.yangpixi.rememberdrinking.util.GlobalSnackBarUtils
+import dev.icerock.moko.permissions.Permission
+import dev.icerock.moko.permissions.PermissionsController
+import dev.icerock.moko.permissions.compose.BindEffect
+import dev.icerock.moko.permissions.compose.PermissionsControllerFactory
+import dev.icerock.moko.permissions.compose.rememberPermissionsControllerFactory
+import dev.icerock.moko.permissions.notifications.REMOTE_NOTIFICATION
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.koinInject
@@ -49,10 +55,15 @@ fun App() {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     val globalSnackBarUtils = koinInject<GlobalSnackBarUtils>()
     val scheduler = koinInject<NotificationScheduler>()
+    val factory: PermissionsControllerFactory = rememberPermissionsControllerFactory()
+    val controller: PermissionsController = remember(factory) { factory.createPermissionsController() }
     val scope = rememberCoroutineScope()
+
+    BindEffect(controller) // 绑定context到controller，便于安卓申请权限（moko库）
 
     scope.launch {
         scheduler.requestPermission()
+        controller.providePermission(Permission.REMOTE_NOTIFICATION)
         scheduler.scheduleNotification(
             title = "Reminder",
             content = "记得喝水哦",
