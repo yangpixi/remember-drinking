@@ -79,7 +79,9 @@ kotlin {
             implementation(libs.filekit.core)
             implementation(libs.filekit.dialogs)
             implementation(libs.filekit.dialogs.compose)
-            implementation("com.benasher44:uuid:0.8.4")
+            implementation(libs.uuid)
+            implementation(libs.permissions.compose)
+            implementation(libs.permissions.notifications)
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)

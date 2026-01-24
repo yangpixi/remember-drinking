@@ -19,9 +19,12 @@ datastore = "1.2.0"
 ktor = "3.3.3"
 kotlinx-coroutines = "1.10.2"
 kotlinxDatetime = "0.7.1"
+permissionsCompose = "0.20.1"
+permissionsNotifications = "0.20.1"
 sql-delight = "2.2.1"
 coilCompose = "3.3.0"
 coilNetworkKtor3 = "3.3.0"
+uuid = "0.8.4"
 workRuntimeKtx = "2.11.0"
 filekit = "0.12.0"
 
@@ -57,6 +60,8 @@ ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinx-coroutines" }
 kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "kotlinxDatetime" }
+permissions-compose = { module = "dev.icerock.moko:permissions-compose", version.ref = "permissionsCompose" }
+permissions-notifications = { module = "dev.icerock.moko:permissions-notifications", version.ref = "permissionsNotifications" }
 sql-delight-android = { module = "app.cash.sqldelight:android-driver", version.ref = "sql-delight" }
 sql-delight-ios = { module = "app.cash.sqldelight:native-driver", version.ref = "sql-delight" }
 sql-delight-runtime = { module = "app.cash.sqldelight:runtime", version.ref = "sql-delight"}
@@ -67,6 +72,7 @@ coil-svg = { module = "io.coil-kt.coil3:coil-svg", version.ref = "coilCompose" }
 filekit-core = { module = "io.github.vinceglb:filekit-core", version.ref = "filekit" }
 filekit-dialogs = { module = "io.github.vinceglb:filekit-dialogs", version.ref = "filekit" }
 filekit-dialogs-compose = { module = "io.github.vinceglb:filekit-dialogs-compose", version.ref = "filekit" }
+uuid = { module = "com.benasher44:uuid", version.ref = "uuid" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
