@@ -126,6 +126,23 @@ fun SettingsScreen(
                 )
 
                 Text(
+                    text = "通知",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(shape = RoundedCornerShape(24.dp))
+                        .clickable(onClick = {
+                            navController.navigate("notification")
+                        })
+                        .padding(10.dp),
+                    style = MaterialTheme.typography.bodyLarge
+                )
+
+                HorizontalDivider(
+                    modifier = Modifier
+                        .padding(10.dp, 5.dp)
+                )
+
+                Text(
                     text = "关于",
                     modifier = Modifier
                         .fillMaxWidth()

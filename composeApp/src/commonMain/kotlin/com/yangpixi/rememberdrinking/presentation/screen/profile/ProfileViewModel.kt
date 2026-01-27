@@ -27,7 +27,7 @@ class ProfileViewModel(
 ) : ViewModel() {
     val currentUser = userRepo.currentUser
 
-    val _phoneValue = MutableStateFlow("")
+    private val _phoneValue = MutableStateFlow("")
 
     val phoneValue: StateFlow<String> = _phoneValue
 

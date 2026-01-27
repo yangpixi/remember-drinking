@@ -79,7 +79,8 @@ fun ValueSetDialog(
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Number,
                         imeAction = ImeAction.Done
-                    )
+                    ),
+                    shape = RoundedCornerShape(12.dp)
                 )
 
                 Row(
