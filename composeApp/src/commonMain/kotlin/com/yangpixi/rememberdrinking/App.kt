@@ -12,6 +12,7 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.TopAppBarDefaults
@@ -23,7 +24,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.compose.AppTheme
-import com.yangpixi.rememberdrinking.platform.NotificationScheduler
 import com.yangpixi.rememberdrinking.presentation.component.BottomBar
 import com.yangpixi.rememberdrinking.presentation.component.BottomNavItem
 import com.yangpixi.rememberdrinking.presentation.component.TopBar
@@ -34,14 +34,8 @@ import com.yangpixi.rememberdrinking.presentation.screen.history.HistoryScreen
 import com.yangpixi.rememberdrinking.presentation.screen.home.HomeScreen
 import com.yangpixi.rememberdrinking.presentation.screen.profile.ProfileScreen
 import com.yangpixi.rememberdrinking.presentation.screen.settings.SettingsScreen
+import com.yangpixi.rememberdrinking.presentation.screen.settings.notification.NotificationScreen
 import com.yangpixi.rememberdrinking.util.GlobalSnackBarUtils
-import dev.icerock.moko.permissions.Permission
-import dev.icerock.moko.permissions.PermissionsController
-import dev.icerock.moko.permissions.compose.BindEffect
-import dev.icerock.moko.permissions.compose.PermissionsControllerFactory
-import dev.icerock.moko.permissions.compose.rememberPermissionsControllerFactory
-import dev.icerock.moko.permissions.notifications.REMOTE_NOTIFICATION
-import kotlinx.coroutines.launch
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.koinInject
 
@@ -54,27 +48,13 @@ fun App() {
     val navController = rememberNavController() //获取navController供NavHost使用
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     val globalSnackBarUtils = koinInject<GlobalSnackBarUtils>()
-    val scheduler = koinInject<NotificationScheduler>()
-    val factory: PermissionsControllerFactory = rememberPermissionsControllerFactory()
-    val controller: PermissionsController = remember(factory) { factory.createPermissionsController() }
-    val scope = rememberCoroutineScope()
-
-    BindEffect(controller) // 绑定context到controller，便于安卓申请权限（moko库）
-
-    scope.launch {
-        scheduler.requestPermission()
-        controller.providePermission(Permission.REMOTE_NOTIFICATION)
-        scheduler.scheduleNotification(
-            title = "Reminder",
-            content = "记得喝水哦",
-            id = 0,
-            delayMillis = 1 * 60 * 60 * 1000 // 默认为一小时提醒一次
-        )
-    }
 
     LaunchedEffect(Unit) {
-        globalSnackBarUtils.uiEvent.collect { ele ->
-            snackbarHostState.showSnackbar(ele)
+        globalSnackBarUtils.uiEvent.collect { msg ->
+            snackbarHostState.showSnackbar(
+                message = msg,
+                duration = SnackbarDuration.Short
+            )
         }
     }
 
@@ -187,6 +167,10 @@ fun App() {
 
                 composable("profile") {
                     ProfileScreen(navController = navController)
+                }
+
+                composable("notification") {
+                    NotificationScreen()
                 }
             }
         }

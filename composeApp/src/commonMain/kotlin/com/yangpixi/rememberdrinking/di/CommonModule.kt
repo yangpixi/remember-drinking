@@ -18,6 +18,7 @@ import com.yangpixi.rememberdrinking.presentation.screen.history.HistoryViewMode
 import com.yangpixi.rememberdrinking.presentation.screen.home.HomeViewModel
 import com.yangpixi.rememberdrinking.presentation.screen.profile.ProfileViewModel
 import com.yangpixi.rememberdrinking.presentation.screen.settings.SettingsViewModel
+import com.yangpixi.rememberdrinking.presentation.screen.settings.notification.NotificationViewModel
 import com.yangpixi.rememberdrinking.util.AuthManager
 import com.yangpixi.rememberdrinking.util.GlobalSnackBarUtils
 import com.yangpixi.rememberdrinking.util.getClient
@@ -99,4 +100,6 @@ val commonModule = module {
     singleOf(::RecordRepoImpl) {
         bind<RecordRepo>()
     }
+
+    viewModelOf(::NotificationViewModel)
 }

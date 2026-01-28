@@ -10,4 +10,6 @@ interface NotificationScheduler {
     fun scheduleNotification(title: String, content: String, id: Int, delayMillis: Long)
 
     suspend fun requestPermission() : Boolean
+
+    fun cancelAllNotification()
 }

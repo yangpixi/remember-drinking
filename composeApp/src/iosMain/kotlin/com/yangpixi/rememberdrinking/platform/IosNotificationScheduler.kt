@@ -28,12 +28,13 @@ class IosNotificationScheduler : NotificationScheduler {
             repeats = true // 可重复
         )
 
-        val request = UNNotificationRequest.requestWithIdentifier(id.toString(), content, trigger)
+        val request = UNNotificationRequest.requestWithIdentifier("notificationSchedule", content, trigger)
         UNUserNotificationCenter.currentNotificationCenter().addNotificationRequest(request) { error ->
             if (error != null) println("iOS Notification Error: ${error.localizedDescription}")
         }
     }
 
+    // 引入了moko-permission库以后不需要此方法申请权限
     override suspend fun requestPermission(): Boolean = suspendCancellableCoroutine { cont ->
         val options = UNAuthorizationOptionAlert or UNAuthorizationOptionSound or UNAuthorizationOptionBadge
         UNUserNotificationCenter.currentNotificationCenter().requestAuthorizationWithOptions(options) { granted, error ->
@@ -45,5 +46,10 @@ class IosNotificationScheduler : NotificationScheduler {
                 }
             }
         }
+    }
+
+    override fun cancelAllNotification() {
+        UNUserNotificationCenter.currentNotificationCenter()
+            .removeDeliveredNotificationsWithIdentifiers(listOf("notificationSchedule"))
     }
 }

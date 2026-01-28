@@ -2,6 +2,7 @@ package com.yangpixi.rememberdrinking.platform
 
 import android.content.Context
 import androidx.work.Data
+import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import java.util.concurrent.TimeUnit
@@ -34,10 +35,18 @@ class AndroidNotificationScheduler(
             .setInputData(inputData)
             .build()
 
-        WorkManager.getInstance(context).enqueue(workRequest)
+        WorkManager.getInstance(context).enqueueUniquePeriodicWork(
+            uniqueWorkName = "notificationWork",
+            existingPeriodicWorkPolicy = ExistingPeriodicWorkPolicy.UPDATE,
+            request = workRequest
+        )
     }
 
     override suspend fun requestPermission() : Boolean {
         return true
+    }
+
+    override fun cancelAllNotification() {
+        WorkManager.getInstance(context).cancelUniqueWork("notificationWork")
     }
 }
