@@ -26,12 +26,12 @@ WHERE record_time >= ? AND record_time < ? AND is_deleted = 0;
 
 softDeleteById:
 UPDATE water_intake_record
-SET is_deleted = 1
+SET is_deleted = 1, is_uploaded = 0
 WHERE id = ?;
 
 restoreById:
 UPDATE water_intake_record
-SET is_deleted = 0
+SET is_deleted = 0, is_uploaded = 0
 WHERE id = ?;
 
 selectUnUploadedRecords:

@@ -134,6 +134,9 @@ class NotificationViewModel(
                     it.copy(hasChanges = false)
                 }
 
+                // 先取消先前的通知配置，再重新开启，防止配置不生效
+                cancelNotificationSchedule()
+                scheduleNotification()
                 globalSnackBarUtils.sendEvent("保存成功")
             }
 

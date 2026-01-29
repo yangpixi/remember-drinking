@@ -1,6 +1,7 @@
 package com.yangpixi.rememberdrinking.presentation.screen.auth.login
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -24,6 +25,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -47,6 +50,7 @@ fun LoginScreen(
     val viewModel = koinViewModel<LoginViewModel>()
     val usernameValue by viewModel.usernameValue.collectAsState()
     val passwordValue by viewModel.passwordValue.collectAsState()
+    val focusManager = LocalFocusManager.current
 
     val scrollState = rememberScrollState()
     val scope = rememberCoroutineScope() // 获取协程，方便调用suspend方法
@@ -55,7 +59,14 @@ fun LoginScreen(
         modifier = Modifier
             .fillMaxSize()
             .imePadding()
-            .verticalScroll(scrollState),
+            .verticalScroll(scrollState)
+            .pointerInput(Unit) {
+                detectTapGestures(
+                    onTap = {
+                        focusManager.clearFocus()
+                    }
+                )
+            },
     ) {
         Spacer(modifier = Modifier.height(20.dp))
 
